@@ -1,13 +1,22 @@
 #include <Arduino.h>
+#include <ESP8266WiFi.h>
 #include <ClosedCube_HDC1080.h>
 
 #define SOIL_MOISTURE_PIN A0
+
+const char *ssid = "dragino-266230";
+const char *password = "dragino+dragino";
+
+//onst char *ssid = "Borrero Movistar";
+//const char *password = "FamiliaHB2022";
 
 int estado = 0;
 double temperatura = 0;
 double humedad_aire = 0;
 double medicion_humedad_tierra = 0;
 double humedad_tierra = 0;
+
+WiFiClient client;
 
 ClosedCube_HDC1080 sensorHT;
 
@@ -17,6 +26,17 @@ void setup()
     sensorHT.begin(0x40);
 
     Serial.println("");
+    Serial.println("Medición de temperatura, humedad del aire y humedad de la tierra");
+
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(ssid, password);
+
+    while (WiFi.status() != WL_CONNECTED)
+    {
+        delay(500);
+        Serial.println("Esperando conexion");
+    }
+    Serial.println("Conectado");
 
     estado = 1;
 }
@@ -67,6 +87,31 @@ void loop()
             break;
         
         case 5:
+            delay(3000);
+            if (client.connect("34.196.243.0", 80))
+            {
+                String s = "{'Sensor1':{'temperatura': " + String(temperatura) + ", 'humedadAire': " + String(humedad_aire) + "'humedadTierra': " + String(humedad_tierra) + "}}";
+                client.println("POST /enviardatos HTTP/1.1");
+                client.println("Host: 54.80.138.101");
+                client.println("Content-Type: application/json");
+                client.println("Content-Length: " + String(s.length()));
+                client.println("");
+                client.println(s);
+                delay(500);
+                while (client.available())
+                {
+                    String line = client.readStringUntil('\n');
+                    Serial.println(line);
+                }
+            }
+            else
+            {
+                Serial.println("Error al conectar con el servidor");
+            }
+            estado = 6;
+            break;
+
+        case 6:
             temperatura = 0;
             humedad_aire = 0;
             humedad_tierra = 0;

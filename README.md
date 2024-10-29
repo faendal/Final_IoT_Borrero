@@ -1,2 +1,3 @@
 # upbsmartiot
-general platform for inteligence campus development using iot and ia
+
+General platform for inteligence campus development using iot and ia
