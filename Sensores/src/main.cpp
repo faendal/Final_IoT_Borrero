@@ -88,11 +88,11 @@ void loop()
         
         case 5:
             delay(3000);
-            if (client.connect("34.196.243.0", 80))
+            if (client.connect("34.196.243.0", 1026))
             {
-                String s = "{'Sensor1':{'temperatura': " + String(temperatura) + ", 'humedadAire': " + String(humedad_aire) + "'humedadTierra': " + String(humedad_tierra) + "}}";
-                client.println("POST /enviardatos HTTP/1.1");
-                client.println("Host: 54.80.138.101");
+                String s = "{\"temperatura\": {\"value\": " + String(temperatura) + ", \"type\": \"Float\"}, \"humedad_aire\": {\"value\": " + String(humedad_aire) + ", \"type\": \"Float\"}, \"humedad_tierra\": {\"value\": " + String(humedad_tierra) + ", \"type\": \"Float\"}}";
+                client.println("PATCH /v2/entities/sensor1/attrs HTTP/1.1");
+                client.println("Host: 34.196.243.0");
                 client.println("Content-Type: application/json");
                 client.println("Content-Length: " + String(s.length()));
                 client.println("");
