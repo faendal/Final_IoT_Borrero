@@ -6,12 +6,19 @@ import dash_bootstrap_components as dbc
 # Inicializamos la aplicación de Dash
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
+# Activar la supresión de excepciones por callback
+app.config.suppress_callback_exceptions = True
+
 # Layout de la aplicación
 app.layout = html.Div(
     [
+        # Monitorización de la URL
+        dcc.Location(id="url", refresh=False),
         # Título
         html.Div(
-            children=[html.H1("Sistema de Monitoreo - Temperatura y Humedad de una Planta")],
+            children=[
+                html.H1("Sistema de Monitoreo - Temperatura y Humedad de una Planta")
+            ],
             style={"textAlign": "center", "padding": "10px"},
         ),
         # Imágenes de la planta
@@ -51,17 +58,17 @@ app.layout = html.Div(
 def display_page(pathname):
     if pathname == "/temperature":
         return html.Iframe(
-            src="http://localhost:3000/d/temperature-chart",
+            src="http://34.196.243.0:3000/d/de2cff5rfiadcc/medidasproyecto?from=now-15m&to=now&timezone=browser&viewPanel=panel-3",
             style={"width": "100%", "height": "400px"},
         )
     elif pathname == "/humidity_air":
         return html.Iframe(
-            src="http://localhost:3000/d/humidity-air-chart",
+            src="http://34.196.243.0:3000/d/de2cff5rfiadcc/medidasproyecto?from=now-15m&to=now&timezone=browser&viewPanel=panel-2",
             style={"width": "100%", "height": "400px"},
         )
     elif pathname == "/humidity_soil":
         return html.Iframe(
-            src="http://localhost:3000/d/humidity-soil-chart",
+            src="http://34.196.243.0:3000/d/de2cff5rfiadcc/medidasproyecto?from=now-15m&to=now&timezone=browser&viewPanel=panel-1",
             style={"width": "100%", "height": "400px"},
         )
     else:
@@ -70,4 +77,4 @@ def display_page(pathname):
 
 # Iniciar el servidor de Dash
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(host="0.0.0.0", port=80, debug=True)

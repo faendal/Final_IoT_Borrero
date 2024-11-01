@@ -4,11 +4,11 @@
 
 #define SOIL_MOISTURE_PIN A0
 
-const char *ssid = "dragino-266230";
-const char *password = "dragino+dragino";
+//const char *ssid = "dragino-266230";
+//const char *password = "dragino+dragino";
 
-//onst char *ssid = "Borrero Movistar";
-//const char *password = "FamiliaHB2022";
+const char *ssid = "Borrero Movistar";
+const char *password = "FamiliaHB2022";
 
 int estado = 0;
 double temperatura = 0;
