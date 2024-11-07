@@ -1,9 +1,3 @@
-# Ejemplo de como desplegar en un ambiente de prueba un framework FIWARE para 
-# una aplicacion de ciudad inteligente / Internet de las Cosas
-# 
-# En este ejemplo vamos a usar un sensor que lee la temperatura de una termocupla
-# y la almacena en una base de datos en un servidor FiWARE en la Nube
-# sudo sysctl -w vm.max_map_count=262144
 version: "3.8"
 services:
   # Orion es el motor principal, el agente, el context broker
@@ -80,6 +74,16 @@ services:
       - "3000:3000"
     volumes:
       - grafana:/var/lib/grafana
+
+  dash-app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: dash-app
+    ports:
+      - "80:80"
+    depends_on:
+      - crate-db
 
 networks:
   default:
