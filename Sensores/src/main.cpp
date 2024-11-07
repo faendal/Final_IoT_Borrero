@@ -69,7 +69,7 @@ void loop()
             for (int i = 0; i < 5; i++)
             { 
                 medicion_humedad_tierra = analogRead(SOIL_MOISTURE_PIN);
-                humedad_tierra += map(medicion_humedad_tierra, 0, 1023, 0, 100);
+                humedad_tierra += map(medicion_humedad_tierra, 1030, 575, 0, 100);
                 delay(100);
             }
             humedad_tierra = humedad_tierra / 5.0;
